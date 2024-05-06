@@ -139,29 +139,29 @@ done
 
 brew_cask_to_install=(
     'iterm2'                # terminal
-    'keepingyouawake'       # prevent sleep
-    'appcleaner'            # good for app cleanup
+    # 'keepingyouawake'       # prevent sleep
+    # 'appcleaner'            # good for app cleanup
     'slack'                 # chat app
     'spotify'               # music player
     # 'transmit'              # (s)ftp app
     # 'alfred'                # launcher and clipboard manager
-    'sketch'                # vector design
-    '1password'             # Password Manager
+    # 'sketch'                # vector design
+    # '1password'             # Password Manager
     'visual-studio-code'    # text editor
-    'mimestream'            # email client
+    # 'mimestream'            # email client
     'lingon-x'              # manage startup items
     # 'vlc'                   # player
-    'monitorcontrol'        # control external monitor setttings
+    # 'monitorcontrol'        # control external monitor setttings
     'font-fira-code'        # font with ligatures
     # 'sublime-text'          # text editor; faster than vscode
-    'signal'                # encrypted chat
+    # 'signal'                # encrypted chat
     'discord'               # chat app
     'orbstack'              # replacement for docker
     'zoom'                  # video conferencing
-    # 'notion'                # note taking
-    'mac-mouse-fix'         # fix mouse acceleration and control
+    'notion'                # note taking
+    # 'mac-mouse-fix'         # fix mouse acceleration and control
     'cyberduck'             # sftp client
-    'netnewswire'           # rss reader
+    # 'netnewswire'           # rss reader
 )
 
 
@@ -175,24 +175,24 @@ for package in "${brew_cask_to_install[@]}"; do
 done
 
 mas_install=(
-    '429449079'     # Patterns
-    '425424353'     # The Unarchiver
-    '403304796'     # iNet Network Scanner
-    '956377119'     # WorldClock
-    '1289583905'    # Pixelmator Pro
-    '1592917505'    # Noir
-    '992115977'     # image2icon
-    '1569813296'    # 1Password For Safari
-    '1320666476'    # Wipr
+    # '429449079'     # Patterns
+    # '425424353'     # The Unarchiver
+    # '403304796'     # iNet Network Scanner
+    # '956377119'     # WorldClock
+    # '1289583905'    # Pixelmator Pro
+    # '1592917505'    # Noir
+    # '992115977'     # image2icon
+    # '1569813296'    # 1Password For Safari
+    # '1320666476'    # Wipr
     # '2143935391'    # OpenCat
-    '1502111349'    # PDF Squeezer
-    '1475387142'    # TailScale
-    '1376402589'    # Stop The Maddenss
-    '1179623856'    # Pastebot
-    '441258766'     # Magnet
-    '1545870783'    # Color Picker
-    '899247664'     # TestFlight
-    '904280696'     # Things
+    # '1502111349'    # PDF Squeezer
+    # '1475387142'    # TailScale
+    # '1376402589'    # Stop The Maddenss
+    # '1179623856'    # Pastebot
+    # '441258766'     # Magnet
+    # '1545870783'    # Color Picker
+    # '899247664'     # TestFlight
+    # '904280696'     # Things
 )
 
 not_signed_in_mas="Not signed in"
@@ -256,25 +256,13 @@ function install_from_repo () {
 
 # Install apps from github releases
 github_install=(
-    'Lord-Kamina/SwiftDefaultApps'
-    'pallotron/yubiswitch'
+    # 'Lord-Kamina/SwiftDefaultApps'
+    # 'pallotron/yubiswitch'
 )
 for gh in "${github_install[@]}"; do
     install_from_repo "${gh}"
 done
 
-# configure sync folder iterm2 & symlink scripts
-defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "${HOME}/dotfiles/iterm2"
-rm -rf "${HOME}/Library/Application Support/iTerm2/Scripts"
-ln -s ${script_dir}/iterm2-scripts "${HOME}/Library/Application Support/iTerm2/Scripts"
-
-# configure symlink for sublime text
-bash ${script_dir}/home-symlink.sh \
-    "${script_dir}/sublime-text" \
-    "${HOME}/Library/Application Support/Sublime Text" \
-    0
-
-
-bash ${script_dir}/bootstrap.sh
+# bash ${script_dir}/bootstrap.sh
 
 echo "macOS setup completed."
