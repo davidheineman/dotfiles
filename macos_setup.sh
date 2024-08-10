@@ -1,5 +1,3 @@
-# TODO: Install Product Sans and Futura
-
 # Save screenshots to Downloads
 defaults write com.apple.screencapture location "${HOME}/Downloads"
 
@@ -124,6 +122,7 @@ brew_packages_to_install=(
     'lsusb'
     'diff-pdf'
     'ripgrep'
+    'poetry'
 )
 
 
