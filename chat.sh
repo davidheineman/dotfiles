@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Install:
+# sudo cp chat.sh /usr/local/bin/chat && source ~/.zshrc
+
+# TODO: allow increasing max tokens as a parameter
+# TODO: get current terminal for context (history | tail -n 2)
+# TODO: change context if this is a bash/zsh terminal
+# TODO: Add "help" command
+
 MODEL="gpt-4o-mini" # "gpt-3.5-turbo"
 PROMPT="$*"
 
@@ -20,7 +28,7 @@ RESPONSE=$(curl -s https://api.openai.com/v1/chat/completions \
   -d '{
     "model": "'"$MODEL"'",
     "messages": [
-        {"role": "system", "content": "You are a zsh assistant. If applicable, output a unix command wrapped in ```. Only propose one command at a time."},
+        {"role": "system", "content": "You are a zsh assistant on a macos system. If applicable, output a unix command wrapped in ```. Only propose one command at a time."},
         {"role": "user", "content": "'"$PROMPT"'"}
     ],
     "max_tokens": 200
@@ -41,36 +49,3 @@ if [ ! -z "$COMMAND" ]; then
     eval "$COMMAND"
   fi
 fi
-
-# TODO: allow increasing max tokens as a parameter
-# TODO: get current terminal for context (history | tail -n 2)
-# TODO: Add "help" command
-
-# {
-#   "id": "chatcmpl-9umI7PPrncItKOmBNGIQBpN0YmzXT",
-#   "object": "chat.completion",
-#   "created": 1723319027,
-#   "model": "gpt-3.5-turbo-0125",
-#   "choices": [
-#     {
-#       "index": 0,
-#       "message": {
-#         "role": "assistant",
-#         "content": "Hello! How can I assist you today?",
-#         "refusal": null
-#       },
-#       "logprobs": null,
-#       "finish_reason": "stop"
-#     }
-#   ],
-#   "usage": {
-#     "prompt_tokens": 8,
-#     "completion_tokens": 9,
-#     "total_tokens": 17
-#   },
-#   "system_fingerprint": null
-# }
-
-# Install:
-# brew install jq
-# sudo cp chat.sh /usr/local/bin/chat && source ~/.zshrc

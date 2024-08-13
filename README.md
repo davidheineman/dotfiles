@@ -6,3 +6,5 @@ My MacOS Setup
 
 TODO:
 - Install Product Sans and Futura
+- Add `~/.zshrc` and install command
+- Create prompts for secrets/logins (HF, git, openai)

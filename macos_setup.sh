@@ -123,6 +123,9 @@ brew_packages_to_install=(
     'diff-pdf'
     'ripgrep'
     'poetry'
+    'figlet'
+    'lolcat'
+    'jq'
 )
 
 
@@ -138,29 +141,16 @@ done
 
 brew_cask_to_install=(
     'iterm2'                # terminal
-    # 'keepingyouawake'       # prevent sleep
-    # 'appcleaner'            # good for app cleanup
     'slack'                 # chat app
     'spotify'               # music player
-    # 'transmit'              # (s)ftp app
-    # 'alfred'                # launcher and clipboard manager
-    # 'sketch'                # vector design
-    # '1password'             # Password Manager
     'visual-studio-code'    # text editor
-    # 'mimestream'            # email client
     'lingon-x'              # manage startup items
-    # 'vlc'                   # player
-    # 'monitorcontrol'        # control external monitor setttings
     'font-fira-code'        # font with ligatures
-    # 'sublime-text'          # text editor; faster than vscode
-    # 'signal'                # encrypted chat
     'discord'               # chat app
     'orbstack'              # replacement for docker
     'zoom'                  # video conferencing
     'notion'                # note taking
-    # 'mac-mouse-fix'         # fix mouse acceleration and control
     'cyberduck'             # sftp client
-    # 'netnewswire'           # rss reader
 )
 
 
