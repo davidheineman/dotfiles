@@ -14,10 +14,10 @@ if [ "$#" -eq 0 ]; then
 fi
 
 PROMPT="$*"
-PROMPT=$(echo "$*" | sed 's/ /%20/g') # TODO: Allow arbitrary strings
+# PROMPT=$(echo "$*" | sed 's/ /%20/g') # TODO: Allow arbitrary strings
 
 RESPONSE=$(curl -s \
-    "http://localhost:8893/api/search" \
+    "https://acl-search.fly.dev/api/search" \
     --get \
     --data-urlencode "start_year=2020" \
     --data-urlencode "end_year=2024" \

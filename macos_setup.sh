@@ -32,9 +32,10 @@ defaults write com.apple.finder ShowHardDrivesOnDesktop -bool false
 defaults write com.apple.finder ShowMountedServersOnDesktop -bool true
 defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
 
-# Do not create .DS_Store files on remote disks or USB stores
-defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
-defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+# Do not create .DS_Store files...
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true # ... on remote disks
+defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true # ... on USB stores
+defaults write com.apple.desktopservices DSDontWriteLocalStores -bool true # ... anywhere locally
 
 # Disable auto-correct
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
@@ -44,6 +45,11 @@ chflags nohidden ~/Library
 
 # Restart SystemUIServer
 killall SystemUIServer
+
+# Get rid of the dock
+defaults write com.apple.dock tilesize -int 10
+defaults write com.apple.dock autohide-time-modifier -float 20000000000
+killall Dock
 
 # Restore boot sound on new macs
 sudo nvram StartupMute=%00
@@ -125,7 +131,18 @@ brew_packages_to_install=(
     'poetry'
     'figlet'
     'lolcat'
-    'jq'
+    'bat'
+    'google-cloud-sdk'
+    'inkscape'
+    'visual-studio-code'
+    'sqlite'
+    'sl'
+    'awscli'
+    'cowsay'
+    'docker'
+    'poetry'
+    'python'
+    'arp-scan'
 )
 
 
@@ -253,5 +270,14 @@ for gh in "${github_install[@]}"; do
 done
 
 # bash ${script_dir}/bootstrap.sh
+
+# Install Oh My Zsh + plugins
+cd ~
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/MichaelAquilina/zsh-you-should-use.git $ZSH_CUSTOM/plugins/you-should-use
+git clone https://github.com/fdellwing/zsh-bat.git $ZSH_CUSTOM/plugins/zsh-bat
+echo "source ${(q-)PWD}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
 
 echo "macOS setup completed."
