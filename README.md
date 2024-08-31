@@ -13,7 +13,7 @@ source ~/.zshrc
 
 ```sh
 # install directly from repo
-curl -o https://raw.githubusercontent.com/davidheineman/dotfiles/main/macos_setup.sh | sh
+sudo curl -s https://raw.githubusercontent.com/davidheineman/dotfiles/main/macos_setup.sh | sh
 ```
 
 TODO:
