@@ -47,9 +47,12 @@ chflags nohidden ~/Library
 killall SystemUIServer
 
 # Get rid of the dock
-defaults write com.apple.dock tilesize -int 10
-defaults write com.apple.dock autohide-time-modifier -float 20000000000
-killall Dock
+# defaults write com.apple.dock tilesize -int 10
+defaults write com.apple.dock autohide-time-modifier -float 0
+# killall Dock
+
+# Disable chrome in spotlight search
+defaults write com.apple.safari UniversalSearchEnabled -bool false
 
 # Restore boot sound on new macs
 sudo nvram StartupMute=%00
@@ -143,6 +146,10 @@ brew_packages_to_install=(
     'poetry'
     'python'
     'arp-scan'
+    'docker-machine'
+    'blender'
+    'chatgpt'
+    'tailscale'
 )
 
 
@@ -180,25 +187,10 @@ for package in "${brew_cask_to_install[@]}"; do
     fi
 done
 
+# Install apps on the Mac AppStore
 mas_install=(
-    # '429449079'     # Patterns
-    # '425424353'     # The Unarchiver
     # '403304796'     # iNet Network Scanner
     # '956377119'     # WorldClock
-    # '1289583905'    # Pixelmator Pro
-    # '1592917505'    # Noir
-    # '992115977'     # image2icon
-    # '1569813296'    # 1Password For Safari
-    # '1320666476'    # Wipr
-    # '2143935391'    # OpenCat
-    # '1502111349'    # PDF Squeezer
-    # '1475387142'    # TailScale
-    # '1376402589'    # Stop The Maddenss
-    # '1179623856'    # Pastebot
-    # '441258766'     # Magnet
-    # '1545870783'    # Color Picker
-    # '899247664'     # TestFlight
-    # '904280696'     # Things
 )
 
 not_signed_in_mas="Not signed in"
@@ -271,13 +263,29 @@ done
 
 # bash ${script_dir}/bootstrap.sh
 
-# Install Oh My Zsh + plugins
+# Install "Oh My Zsh" + plugins
 cd ~
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
 git clone https://github.com/MichaelAquilina/zsh-you-should-use.git $ZSH_CUSTOM/plugins/you-should-use
 git clone https://github.com/fdellwing/zsh-bat.git $ZSH_CUSTOM/plugins/zsh-bat
 echo "source ${(q-)PWD}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
+
+# Hide folders I don't use
+chflags hidden ~/Pictures ~/Music ~/Movies ~/Public
+
+# Hide dev folders
+chflags hidden ~/miniconda3
+
+# Install fonts folder
+find fonts -name "*.ttf" -exec cp {} ~/Library/Fonts/ \; && find fonts -name "*.otf" -exec cp {} ~/Library/Fonts/ \;
+
+# Intall iterm2 profile
+cp iterm2/iterm2-profiles.json ~/Library/Application\ Support/iTerm2/DynamicProfiles/Profiles.json
+
+# Install custom binaries
+cp acl.sh /usr/local/bin/acl
+cp chat.sh /usr/local/bin/chat
 
 echo "macOS setup completed."

@@ -9,7 +9,17 @@
 # TODO: Add "help" command
 
 MODEL="gpt-4o-mini" # "gpt-3.5-turbo"
-PROMPT="$*"
+
+if [ -t 0 ]; then
+    # No piped input, use command-line arguments
+    PROMPT="$*"
+else
+    # Piped input, prepend command-line arguments
+    PROMPT="$(cat -) $*"
+fi
+
+PROMPT=$(echo "$PROMPT" | tr '\n' ' ')
+PROMPT=$(echo "$PROMPT" | sed 's/\x1b\[[0-9;]*m//g')
 
 if [ -z "$OPENAI_API_KEY" ]; then
   echo "Error: OPENAI_API_KEY is not set in the environment."
@@ -33,6 +43,14 @@ RESPONSE=$(curl -s https://api.openai.com/v1/chat/completions \
     ],
     "max_tokens": 200
   }')
+
+# Check if the API returned an error
+ERROR=$(echo "$RESPONSE" | jq -r '.error.message')
+if [ "$ERROR" != "null" ]; then
+    echo "$RESPONSE"
+    echo -e "\033[31m$ERROR\033[0m"
+    exit 1
+fi
 
 # Parse response
 RESPONSE=$(echo "$RESPONSE" | jq -r '.choices[0].message.content')

@@ -15,13 +15,63 @@
     "Alpha Component" : 1,
     "Green Component" : 0.64705884456634521
   },
-  "Ansi 2 Color (Light)" : {
-    "Red Component" : 0,
-    "Color Space" : "sRGB",
-    "Blue Component" : 0,
-    "Alpha Component" : 1,
-    "Green Component" : 0.73725491762161255
-  },
+  "Smart Selection Rules" : [
+    {
+      "notes" : "Word bounded by whitespace",
+      "regex" : "\\S+",
+      "precision" : "low"
+    },
+    {
+      "notes" : "C++ namespace::identifier",
+      "regex" : "([a-zA-Z0-9_]+::)+[a-zA-Z0-9_]+",
+      "precision" : "normal"
+    },
+    {
+      "notes" : "Paths",
+      "regex" : "\\~?\/?([[:letter:][:number:]._-]+\/+)+[[:letter:][:number:]._-]+\/?",
+      "precision" : "normal"
+    },
+    {
+      "notes" : "Quoted string",
+      "regex" : "@?\"(?:[^\"\\\\]|\\\\.)*\"",
+      "precision" : "normal"
+    },
+    {
+      "notes" : "Java\/Python include paths",
+      "regex" : "([[:letter:][:number:]._]+\\.)+[[:letter:][:number:]._]+",
+      "precision" : "normal"
+    },
+    {
+      "notes" : "mailto URL",
+      "regex" : "\\bmailto:([a-z0-9A-Z_]+@)?([a-zA-Z0-9\\-]+\\.)*[a-zA-Z0-9\\-]+\\b",
+      "precision" : "normal"
+    },
+    {
+      "notes" : "Obj-C selector",
+      "regex" : "@selector\\([^)]+\\)",
+      "precision" : "high"
+    },
+    {
+      "notes" : "email address",
+      "regex" : "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}\\b",
+      "precision" : "high"
+    },
+    {
+      "notes" : "HTTP URL",
+      "regex" : "((?<!\\()https?:\/\/([a-z0-9A-Z]+(:[a-zA-Z0-9]+)?@)?([a-z0-9A-Z][-a-z0-9A-Z]*\\.)*[A-Za-z][-A-Za-z]*((:[0-9]+)?)(\/[a-zA-Z0-9;\/.\\-_+%?&@=#~()]*)?)|(https?:\/\/([a-z0-9A-Z]+(:[a-zA-Z0-9]+)?@)?([a-z0-9A-Z][-a-z0-9A-Z]*\\.)*[A-Za-z][-A-Za-z]*((:[0-9]+)?)(\/[a-zA-Z0-9;\/.\\-_+%?&@=#~(]*)?)",
+      "precision" : "very_high"
+    },
+    {
+      "notes" : "SSH URL",
+      "regex" : "\\bssh:([a-z0-9A-Z_]+@)?([a-zA-Z0-9\\-]+\\.)*[a-zA-Z0-9\\-]+\\b",
+      "precision" : "very_high"
+    },
+    {
+      "notes" : "Telnet URL",
+      "regex" : "\\btelnet:([a-z0-9A-Z_]+@)?([a-zA-Z0-9\\-]+\\.)*[a-zA-Z0-9\\-]+\\b",
+      "precision" : "very_high"
+    }
+  ],
   "Bold Color" : {
     "Red Component" : 0.062745101749897003,
     "Color Space" : "sRGB",
@@ -51,6 +101,13 @@
     "Alpha Component" : 1,
     "Green Component" : 0.40000000596046448
   },
+  "Ansi 2 Color (Light)" : {
+    "Red Component" : 0,
+    "Color Space" : "sRGB",
+    "Blue Component" : 0,
+    "Alpha Component" : 1,
+    "Green Component" : 0.73725491762161255
+  },
   "Background Color" : {
     "Red Component" : 0.97999999999999998,
     "Color Space" : "sRGB",
@@ -58,7 +115,6 @@
     "Alpha Component" : 1,
     "Green Component" : 0.97999999999999998
   },
-  "Columns" : 185,
   "Ansi 8 Color" : {
     "Red Component" : 0.40781760215759277,
     "Color Space" : "sRGB",
@@ -66,6 +122,7 @@
     "Alpha Component" : 1,
     "Green Component" : 0.40782788395881653
   },
+  "Columns" : 185,
   "Right Option Key Sends" : 2,
   "Ansi 4 Color (Light)" : {
     "Red Component" : 0.015686275437474251,
@@ -94,108 +151,108 @@
   "Cursor Type" : 2,
   "Keyboard Map" : {
     "0x5e-0x60000" : {
-      "Action" : 11,
-      "Text" : "0x1e"
+      "Text" : "0x1e",
+      "Action" : 11
     },
     "0xf702-0x280000" : {
-      "Action" : 10,
-      "Text" : "b"
+      "Text" : "b",
+      "Action" : 10
     },
     "0xf702-0x260000" : {
-      "Action" : 11,
-      "Text" : "0x1b 0x1b 0x5b 0x44"
+      "Text" : "0x1b 0x1b 0x5b 0x44",
+      "Action" : 11
     },
     "0xf703-0x280000" : {
-      "Action" : 10,
-      "Text" : "f"
+      "Text" : "f",
+      "Action" : 10
     },
     "0xf702-0x240000" : {
-      "Action" : 10,
-      "Text" : "[5D"
+      "Text" : "[5D",
+      "Action" : 10
     },
     "0xf70a-0x20000" : {
-      "Action" : 10,
-      "Text" : "[28~"
+      "Text" : "[28~",
+      "Action" : 10
     },
     "0x2d-0x40000" : {
-      "Action" : 11,
-      "Text" : "0x1f"
+      "Text" : "0x1f",
+      "Action" : 11
     },
     "0xf702-0x220000" : {
-      "Action" : 10,
-      "Text" : "[D"
+      "Text" : "[D",
+      "Action" : 10
     },
     "0xf703-0x240000" : {
-      "Action" : 10,
-      "Text" : "[5C"
+      "Text" : "[5C",
+      "Action" : 10
     },
     "0xf703-0x260000" : {
-      "Action" : 10,
-      "Text" : "[C"
+      "Text" : "[C",
+      "Action" : 10
     },
     "0xf700-0x280000" : {
-      "Action" : 10,
-      "Text" : "[A"
+      "Text" : "[A",
+      "Action" : 10
     },
     "0xf703-0x220000" : {
-      "Action" : 10,
-      "Text" : "[C"
+      "Text" : "[C",
+      "Action" : 10
     },
     "0xf700-0x260000" : {
-      "Action" : 10,
-      "Text" : "[A"
+      "Text" : "[A",
+      "Action" : 10
     },
     "0xf701-0x280000" : {
-      "Action" : 10,
-      "Text" : "[B"
+      "Text" : "[B",
+      "Action" : 10
     },
     "0xf700-0x240000" : {
-      "Action" : 10,
-      "Text" : "[A"
+      "Text" : "[A",
+      "Action" : 10
     },
     "0xf701-0x260000" : {
-      "Action" : 10,
-      "Text" : "[B"
+      "Text" : "[B",
+      "Action" : 10
     },
     "0xf700-0x220000" : {
-      "Action" : 10,
-      "Text" : "[A"
+      "Text" : "[A",
+      "Action" : 10
     },
     "0xf701-0x240000" : {
-      "Action" : 10,
-      "Text" : "[B"
+      "Text" : "[B",
+      "Action" : 10
     },
     "0xf72b-0x20000" : {
-      "Action" : 10,
-      "Text" : "[F"
+      "Text" : "[F",
+      "Action" : 10
     },
     "0xf701-0x220000" : {
-      "Action" : 10,
-      "Text" : "[B"
+      "Text" : "[B",
+      "Action" : 10
     },
     "0xf708-0x20000" : {
-      "Action" : 10,
-      "Text" : "[25~"
+      "Text" : "[25~",
+      "Action" : 10
     },
     "0xf709-0x20000" : {
-      "Action" : 10,
-      "Text" : "[26~"
+      "Text" : "[26~",
+      "Action" : 10
     },
     "0xf70b-0x20000" : {
-      "Action" : 10,
-      "Text" : "[29~"
+      "Text" : "[29~",
+      "Action" : 10
     },
     "0xf72b-0x40000" : {
-      "Action" : 4,
-      "Text" : ""
+      "Text" : "",
+      "Action" : 4
     },
     "0xf729-0x20000" : {
-      "Action" : 10,
-      "Text" : "[H"
+      "Text" : "[H",
+      "Action" : 10
     },
     "0xf729-0x40000" : {
-      "Action" : 5,
-      "Text" : ""
+      "Text" : "",
+      "Action" : 5
     }
   },
   "Ansi 3 Color (Dark)" : {
@@ -598,9 +655,9 @@
     "Green Component" : 0.77217715978622437
   },
   "Semantic History" : {
+    "editor" : "com.github.atom",
     "text" : "zsh -c 'source ~\/.zshrc && code \\1'",
-    "action" : "command",
-    "editor" : "com.github.atom"
+    "action" : "command"
   },
   "Custom Directory" : "No",
   "Working Directory" : "\/Users\/dhei",
@@ -856,108 +913,108 @@
   "Cursor Type" : 2,
   "Keyboard Map" : {
     "0x5e-0x60000" : {
-      "Action" : 11,
-      "Text" : "0x1e"
+      "Text" : "0x1e",
+      "Action" : 11
     },
     "0xf702-0x280000" : {
-      "Action" : 10,
-      "Text" : "b"
+      "Text" : "b",
+      "Action" : 10
     },
     "0xf702-0x260000" : {
-      "Action" : 11,
-      "Text" : "0x1b 0x1b 0x5b 0x44"
+      "Text" : "0x1b 0x1b 0x5b 0x44",
+      "Action" : 11
     },
     "0xf703-0x280000" : {
-      "Action" : 10,
-      "Text" : "f"
+      "Text" : "f",
+      "Action" : 10
     },
     "0xf702-0x240000" : {
-      "Action" : 10,
-      "Text" : "[5D"
+      "Text" : "[5D",
+      "Action" : 10
     },
     "0xf70a-0x20000" : {
-      "Action" : 10,
-      "Text" : "[28~"
+      "Text" : "[28~",
+      "Action" : 10
     },
     "0x2d-0x40000" : {
-      "Action" : 11,
-      "Text" : "0x1f"
+      "Text" : "0x1f",
+      "Action" : 11
     },
     "0xf702-0x220000" : {
-      "Action" : 10,
-      "Text" : "[D"
+      "Text" : "[D",
+      "Action" : 10
     },
     "0xf703-0x240000" : {
-      "Action" : 10,
-      "Text" : "[5C"
+      "Text" : "[5C",
+      "Action" : 10
     },
     "0xf703-0x260000" : {
-      "Action" : 10,
-      "Text" : "[C"
+      "Text" : "[C",
+      "Action" : 10
     },
     "0xf700-0x280000" : {
-      "Action" : 10,
-      "Text" : "[A"
+      "Text" : "[A",
+      "Action" : 10
     },
     "0xf703-0x220000" : {
-      "Action" : 10,
-      "Text" : "[C"
+      "Text" : "[C",
+      "Action" : 10
     },
     "0xf700-0x260000" : {
-      "Action" : 10,
-      "Text" : "[A"
+      "Text" : "[A",
+      "Action" : 10
     },
     "0xf701-0x280000" : {
-      "Action" : 10,
-      "Text" : "[B"
+      "Text" : "[B",
+      "Action" : 10
     },
     "0xf700-0x240000" : {
-      "Action" : 10,
-      "Text" : "[A"
+      "Text" : "[A",
+      "Action" : 10
     },
     "0xf701-0x260000" : {
-      "Action" : 10,
-      "Text" : "[B"
+      "Text" : "[B",
+      "Action" : 10
     },
     "0xf700-0x220000" : {
-      "Action" : 10,
-      "Text" : "[A"
+      "Text" : "[A",
+      "Action" : 10
     },
     "0xf701-0x240000" : {
-      "Action" : 10,
-      "Text" : "[B"
+      "Text" : "[B",
+      "Action" : 10
     },
     "0xf72b-0x20000" : {
-      "Action" : 10,
-      "Text" : "[F"
+      "Text" : "[F",
+      "Action" : 10
     },
     "0xf701-0x220000" : {
-      "Action" : 10,
-      "Text" : "[B"
+      "Text" : "[B",
+      "Action" : 10
     },
     "0xf708-0x20000" : {
-      "Action" : 10,
-      "Text" : "[25~"
+      "Text" : "[25~",
+      "Action" : 10
     },
     "0xf709-0x20000" : {
-      "Action" : 10,
-      "Text" : "[26~"
+      "Text" : "[26~",
+      "Action" : 10
     },
     "0xf70b-0x20000" : {
-      "Action" : 10,
-      "Text" : "[29~"
+      "Text" : "[29~",
+      "Action" : 10
     },
     "0xf72b-0x40000" : {
-      "Action" : 4,
-      "Text" : ""
+      "Text" : "",
+      "Action" : 4
     },
     "0xf729-0x20000" : {
-      "Action" : 10,
-      "Text" : "[H"
+      "Text" : "[H",
+      "Action" : 10
     },
     "0xf729-0x40000" : {
-      "Action" : 5,
-      "Text" : ""
+      "Text" : "",
+      "Action" : 5
     }
   },
   "Ansi 3 Color (Dark)" : {
@@ -1360,9 +1417,9 @@
     "Green Component" : 0.77217715978622437
   },
   "Semantic History" : {
+    "editor" : "com.github.atom",
     "text" : "zsh -c 'source ~\/.zshrc && code \\1'",
-    "action" : "command",
-    "editor" : "com.github.atom"
+    "action" : "command"
   },
   "Custom Directory" : "No",
   "Working Directory" : "\/Users\/dhei",
