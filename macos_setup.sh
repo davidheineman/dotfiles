@@ -22,6 +22,7 @@ defaults write com.apple.ActivityMonitor ShowCategory -int 0
 
 # Use plain text mode for new TextEdit documents
 defaults write com.apple.TextEdit RichText -int 0
+
 # Open and save files as UTF-8 in TextEdit
 defaults write com.apple.TextEdit PlainTextEncoding -int 4
 defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
@@ -278,6 +279,12 @@ chflags hidden ~/Pictures ~/Music ~/Movies ~/Public
 # Hide dev folders
 chflags hidden ~/miniconda3
 
+# <install from my setup>
+current_dir="$(pwd)"
+cd "${HOME}/Downloads"
+git clone https://github.com/davidheineman/dotfiles.git
+cd dotfiles
+
 # Install fonts folder
 find fonts -name "*.ttf" -exec cp {} ~/Library/Fonts/ \; && find fonts -name "*.otf" -exec cp {} ~/Library/Fonts/ \;
 
@@ -287,5 +294,11 @@ cp iterm2/iterm2-profiles.json ~/Library/Application\ Support/iTerm2/DynamicProf
 # Install custom binaries
 cp acl.sh /usr/local/bin/acl
 cp chat.sh /usr/local/bin/chat
+
+cd ..
+rm -rf dotfiles
+cd "${current_dir}"
+# </install from my setup>
+
 
 echo "macOS setup completed."
