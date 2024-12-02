@@ -151,6 +151,7 @@ brew_packages_to_install=(
     'blender'
     'chatgpt'
     'tailscale'
+    'claude'
 )
 
 
@@ -192,6 +193,7 @@ done
 mas_install=(
     # '403304796'     # iNet Network Scanner
     # '956377119'     # WorldClock
+    '497799835' # xcode
 )
 
 not_signed_in_mas="Not signed in"
@@ -300,5 +302,10 @@ rm -rf dotfiles
 cd "${current_dir}"
 # </install from my setup>
 
+# manual override on xcode installation to get xcrun working (for macos metal)
+xcode-select --switch /Applications/Xcode.app/Contents/Developer
+
+# Add latex to slack
+curl -L https://github.com/thisiscam/math-with-slack/blob/master/math-with-slack.py/?raw=True > math-with-slack.py && python math-with-slack.py
 
 echo "macOS setup completed."
