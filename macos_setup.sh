@@ -100,58 +100,76 @@ done
 brew update && brew upgrade
 
 brew_packages_to_install=(
-    'bash'
-    'coreutils'
-    'bash-completion'
-    'tmux'
-    'macvim'
-    'homebrew/cask/macvim'
-    'mosh'
-    'blueutil'
-    'gnu-sed'
-    'rsync'
-    'tree'
-    'glib'
-    'colordiff'
-    'mas'
-    'nativefier'
-    'jq'
-    'findutils'
-    'openblas'
-    'gnu-tar'
-    'gnu-sed'
-    'gawk'
-    'gnutls'
-    'gnu-indent'
-    'gnu-getopt'
-    'grep'
-    'fswatch'
-    'wget'
-    'zsh-autosuggestions'
-    'pigz'
-    'lsusb'
-    'diff-pdf'
-    'ripgrep'
-    'poetry'
-    'figlet'
-    'lolcat'
-    'bat'
-    'google-cloud-sdk'
-    'inkscape'
-    'visual-studio-code'
-    'sqlite'
-    'sl'
+    'arp-scan'
     'awscli'
+    'bash-completion'
+    'bash'
+    'bat'
+    'blender'
+    'blueutil'
+    'chatgpt'
+    'claude'
+    'colordiff'
+    'coreutils'
     'cowsay'
+    'cryptography'
+    'diff-pdf'
+    'docker-buildx'
+    'docker-completion'
+    'docker-compose'
+    'docker-machine'
     'docker'
+    'figlet'
+    'findutils'
+    'fswatch'
+    'gawk'
+    'gcc'
+    'ghostscript'
+    'glib'
+    'gnu-getopt'
+    'gnu-indent'
+    'gnu-sed'
+    'gnu-sed'
+    'gnu-tar'
+    'gnutls'
+    'google-cloud-sdk'
+    'graphviz'
+    'grep'
+    'homebrew/cask/macvim'
+    'imagemagick'
+    'inkscape'
+    'jq'
+    'lolcat'
+    'lsusb'
+    'macvim'
+    'mas'
+    'mosh'
+    'nativefier'
+    'neofetch'
+    'ollama'
+    'openblas'
+    'openssl@3'
+    'pigz'
+    'poetry'
     'poetry'
     'python'
-    'arp-scan'
-    'docker-machine'
-    'blender'
-    'chatgpt'
+    'r'
+    'ripgrep'
+    'rsync'
+    'ruby'
+    'rust'
+    'sentencepiece'
+    'sl'
+    'sqlite'
     'tailscale'
-    'claude'
+    'tmux'
+    'tree'
+    'uv'
+    'visual-studio-code'
+    'wget'
+    'yarn'
+    'zsh-autosuggestions'
+    'zsh-syntax-highlighting'
 )
 
 
@@ -166,17 +184,24 @@ done
 
 
 brew_cask_to_install=(
+    'blender'
+    'claude'
+    'cyberduck'             # sftp client
+    'docker'
+    'discord'               # chat app
+    'eqmac'
+    'figma'
+    'font-fira-code'        # font with ligatures
+    'google-cloud-sdk'
     'iterm2'                # terminal
+    'lingon-x'              # manage startup items
+    'notion'                # note taking
+    'mactex'
+    'orbstack'              # replacement for docker
     'slack'                 # chat app
     'spotify'               # music player
     'visual-studio-code'    # text editor
-    'lingon-x'              # manage startup items
-    'font-fira-code'        # font with ligatures
-    'discord'               # chat app
-    'orbstack'              # replacement for docker
     'zoom'                  # video conferencing
-    'notion'                # note taking
-    'cyberduck'             # sftp client
 )
 
 
@@ -191,8 +216,6 @@ done
 
 # Install apps on the Mac AppStore
 mas_install=(
-    # '403304796'     # iNet Network Scanner
-    # '956377119'     # WorldClock
     '497799835' # xcode
 )
 
@@ -257,14 +280,11 @@ function install_from_repo () {
 
 # Install apps from github releases
 github_install=(
-    # 'Lord-Kamina/SwiftDefaultApps'
     # 'pallotron/yubiswitch'
 )
 for gh in "${github_install[@]}"; do
     install_from_repo "${gh}"
 done
-
-# bash ${script_dir}/bootstrap.sh
 
 # Install "Oh My Zsh" + plugins
 cd ~
