@@ -7,8 +7,8 @@ chmod +x macos_setup.sh
 ./macos_setup.sh
 
 # add aliases to ~/.zshrc
-echo -e "\n# initialize aliases" >> ~/.zshrc
-echo -e "source $(pwd)/.zshrc" >> ~/.zshrc
+chmod +x $(pwd)/.zshrc # make it executable
+grep -qxF "source $(pwd)/.zshrc" ~/.zshrc || echo "\n\n# Initialize personal aliases\nsource $(pwd)/.zshrc" >> ~/.zshrc # add to terminal init
 ```
 
 ```sh
