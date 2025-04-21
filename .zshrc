@@ -13,7 +13,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # Startup text
 figlet "davidterm" | lolcat
-echo "uv (uvinit, uva) | ghview | neofetch | ai2 (bd, bstart, bstop, blist, bport, bl, ai2code, ai2codereset, ai2cleanup) | skynet | chat | acl | condacreate | chrome (gdrive/docs/sheets/slides/cal/share/join) | scholar | weather | ifconfig | spotify | slack | notion | texts | photos | maps | code" | cut -c -$(tput cols) | lolcat
+echo "uv (uvinit, uva, uvinstall) | ghview | neofetch | ai2 (bd, bstart, bstop, blist, bport, bl, ai2code, ai2codereset, ai2cleanup) | skynet | chat | acl | condacreate | chrome (gdrive/docs/sheets/slides/cal/share/join) | scholar | weather | ifconfig | spotify | slack | notion | texts | photos | maps | code" | cut -c -$(tput cols) | lolcat
 
 # Initalize NVM
 export NVM_DIR="$HOME/.nvm"

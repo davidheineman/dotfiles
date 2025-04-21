@@ -151,6 +151,7 @@ brew_packages_to_install=(
     'openssl@3'
     'pigz'
     'poetry'
+    'podman'
     'poetry'
     'python'
     'r'
