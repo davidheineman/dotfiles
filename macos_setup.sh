@@ -133,6 +133,7 @@ brew_packages_to_install=(
     'gnu-tar'
     'gnutls'
     'google-cloud-sdk'
+    'google-chrome'
     'graphviz'
     'grep'
     'homebrew/cask/macvim'
@@ -169,6 +170,8 @@ brew_packages_to_install=(
     'visual-studio-code'
     'wget'
     'yarn'
+    'vagrant'
+    'virtualbox'
     'zsh-autosuggestions'
     'zsh-syntax-highlighting'
 )
