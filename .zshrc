@@ -37,7 +37,7 @@ alias skynet2="ssh dheineman3@sky2.cc.gatech.edu"
 alias weather='curl "wttr.in/Seattle?format=3"'
 alias ifconfig='curl ifconfig.me'
 
-alias uvinit='uv venv && source .venv/bin/activate'
+alias uvinit='uv venv --python 3.12 && source .venv/bin/activate'
 alias uva='source .venv/bin/activate'
 alias uvinstall='uv pip install -r requirements.txt'
 
