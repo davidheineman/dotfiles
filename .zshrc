@@ -41,6 +41,13 @@ alias uvinit='uv venv --python 3.12 && source .venv/bin/activate'
 alias uva='source .venv/bin/activate'
 alias uvinstall='uv pip install -r requirements.txt'
 
+# disable pip (to encourage uv usage)
+pip_path=$(which pip)
+if [ -n "$pip_path" ] && [ -f "$pip_path" ]; then
+  mv "$pip_path" "$(dirname "$pip_path")/pipforce"
+fi
+alias pip="uv pip" # Error: pip is disabled (use uv/uvinit/uva instead, its better). if you need to use it, call pipforce
+
 alias spotify='open -a "Spotify"'
 alias slack='open -a "Slack"'
 alias notion='open -a "Notion"'
