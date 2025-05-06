@@ -157,6 +157,7 @@ brew_packages_to_install=(
     'python'
     'pyenv'
     'r'
+    'rectangle'
     'ripgrep'
     'rsync'
     'ruby'
