@@ -144,6 +144,10 @@ ghview() { # open a repo on github.com
     gh repo view --web --branch $(git rev-parse --abbrev-ref HEAD)
 }
 
+rick() {
+    curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash
+}
+
 # Manual override on Docker host to get beaker working
 export DOCKER_HOST="unix:///Users/dhei/.docker/run/docker.sock"
 
