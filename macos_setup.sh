@@ -55,6 +55,10 @@ defaults write com.apple.dock autohide-time-modifier -float 0
 # Disable chrome in spotlight search
 defaults write com.apple.safari UniversalSearchEnabled -bool false
 
+# Disable update notifications for MacOS
+defaults write com.apple.SoftwareUpdate MajorOSUserNotificationDate -date "2030-02-07 23:22:47 +0000"
+defaults write com.apple.SoftwareUpdate UserNotificationDate -date "2030-02-07 23:22:47 +0000"
+
 # Restore boot sound on new macs
 sudo nvram StartupMute=%00
 
