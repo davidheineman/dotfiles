@@ -120,6 +120,13 @@ gshare() {
 gjoin() {
     open -a "Google Chrome" "https://meet.google.com/landing?authuser=1&autojoin"
 }
+hf() {
+    if [ -z "$*" ]; then
+        open -a "Google Chrome" "https://huggingface.co/davidheineman"
+    else
+        open -a "Google Chrome" "https://huggingface.co/search/full-text?q=$*"
+    fi
+}
 torch() {
     if [ -z "$*" ]; then
         open -a "Google Chrome" "https://pytorch.org/docs/stable"
