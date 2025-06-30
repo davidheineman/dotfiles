@@ -152,6 +152,8 @@ rick() {
     curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash
 }
 
+alias py='python'
+
 # Manual override on Docker host to get beaker working
 export DOCKER_HOST="unix:///Users/dhei/.docker/run/docker.sock"
 
