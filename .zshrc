@@ -160,15 +160,17 @@ export DOCKER_HOST="unix:///Users/dhei/.docker/run/docker.sock"
 # No HF tokenizer parallel
 export TOKENIZERS_PARALLELISM=false
 
-# Initalize Conda
-__conda_setup="$('/Users/dhei/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/dhei/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/dhei/miniconda3/etc/profile.d/conda.sh"
+condainit() {
+    ### Only initalize conda optionally
+    __conda_setup="$('/Users/dhei/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+    if [ $? -eq 0 ]; then
+        eval "$__conda_setup"
     else
-        export PATH="/Users/dhei/miniconda3/bin:$PATH"
+        if [ -f "/Users/dhei/miniconda3/etc/profile.d/conda.sh" ]; then
+            . "/Users/dhei/miniconda3/etc/profile.d/conda.sh"
+        else
+            export PATH="/Users/dhei/miniconda3/bin:$PATH"
+        fi
     fi
-fi
-unset __conda_setup
+    unset __conda_setup
+}
