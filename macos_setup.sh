@@ -213,6 +213,7 @@ brew_cask_to_install=(
     'spotify'               # music player
     'visual-studio-code'    # text editor
     'zoom'                  # video conferencing
+    'xquartz'
 )
 
 
