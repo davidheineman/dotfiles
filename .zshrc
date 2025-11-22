@@ -4,6 +4,7 @@ zstyle ':omz:update' mode auto
 zstyle ':omz:update' frequency 13
 DISABLE_AUTO_TITLE="true"
 ENABLE_CORRECTION="false"
+# ZSH_THEME="robbyrussell"
 export BAT_PAGER="cat"
 plugins=(git zsh-syntax-highlighting zsh-autosuggestions you-should-use zsh-bat)
 source $ZSH/oh-my-zsh.sh
@@ -13,7 +14,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # Startup text
 figlet "davidterm" | lolcat
-echo "uv (uvinit, uva, uvinstall) | ghview | neofetch | ai2 (bd, bstart, bstop, blist, bport, bl, ai2code, ai2codereset, ai2cleanup) | skynet | chat | acl | condacreate | chrome (gdrive/docs/sheets/slides/cal/share/join) | scholar | weather | ifconfig | spotify | slack | notion | texts | photos | maps | code" | cut -c -$(tput cols) | lolcat
+# echo "uv (uvinit, uva, uvinstall) | ghview | neofetch | ai2 (bd, bstart, bstop, blist, bport, bl, ai2code, ai2codereset, ai2cleanup) | skynet | chat | acl | condacreate | chrome (gdrive/docs/sheets/slides/cal/share/join) | scholar | weather | ifconfig | spotify | slack | notion | texts | photos | maps | code" | cut -c -$(tput cols) | lolcat
 
 # Initalize NVM
 export NVM_DIR="$HOME/.nvm"
@@ -38,6 +39,16 @@ alias uvinit='uv venv --python 3.12 && source .venv/bin/activate'
 alias uva='source .venv/bin/activate'
 alias uvinstall='uv pip install -r requirements.txt'
 
+# Upload to asciinema
+au() {
+    local out url
+    out=$(asciinema upload "$@" 2>&1)
+    url=$(printf '%s\n' "$out" | grep -Eo 'https://asciinema\.org/a/[A-Za-z0-9]+' | tail -n1)
+
+    echo "$url"
+    web "$url"
+}
+
 # disable pip (to encourage uv usage)
 pip_path=$(which pip)
 if [ -n "$pip_path" ] && [ -f "$pip_path" ]; then
@@ -54,6 +65,13 @@ chrome() {
         open -a "Google Chrome"
     else
         open -a "Google Chrome" "https://www.google.com/search?q=$*"
+    fi
+}
+web() {
+    if [ -z "$*" ]; then
+        echo "Specify a website"
+    else
+        open -a "Google Chrome" "$*"
     fi
 }
 photos() {
@@ -172,3 +190,9 @@ condainit() {
     fi
     unset __conda_setup
 }
+
+awscursor() {
+    cursor --remote ssh-remote+ec2 /home/ec2-user
+}
+
+export PATH="/usr/local/bin:$PATH"
