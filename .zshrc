@@ -67,6 +67,13 @@ chrome() {
         open -a "Google Chrome" "https://www.google.com/search?q=$*"
     fi
 }
+atlas() {
+    if [ -z "$*" ]; then
+        open -a "/Applications/ChatGPT Atlas.app"
+    else
+        open -a "/Applications/ChatGPT Atlas.app" "https://chatgpt.com?prompt=$*"
+    fi   
+}
 web() {
     if [ -z "$*" ]; then
         echo "Specify a website"
@@ -193,6 +200,26 @@ condainit() {
 
 awscursor() {
     cursor --remote ssh-remote+ec2 /home/ec2-user
+}
+
+milton() {
+  json=$(curl -s -H "Authorization: Bearer $MILTON_TOKEN" \
+    "https://milton.apps.allenai.org/report?group=contact&start=$(date -v-1m +%Y-%m-%d)&end=$(date +%Y-%m-%d)")
+
+  echo "Last month's cloud spend per user:"
+  echo
+
+  echo "$json" | jq -r '
+    .groups[]
+    | {contact: .contact, value: (.total.value | tonumber)}
+    | select(.contact != null)
+    | [.contact, (.value | tostring)]
+    | @tsv
+  ' | sort -k2 -nr | awk '
+    BEGIN { printf "%-25s %15s\n", "USER", "SPEND ($)"; 
+            printf "%-25s %15s\n", "------------------------", "-------------" }
+    { printf "%-25s %15s\n", $1, $2 }
+  '
 }
 
 export PATH="/usr/local/bin:$PATH"
