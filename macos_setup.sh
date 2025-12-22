@@ -216,6 +216,7 @@ brew_cask_to_install=(
     'visual-studio-code'    # text editor
     'zoom'                  # video conferencing
     'xquartz'
+    'screen-studio'         # screen recordings
 )
 
 
