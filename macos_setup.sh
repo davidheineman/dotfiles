@@ -181,6 +181,8 @@ brew_packages_to_install=(
     'virtualbox'
     'zsh-autosuggestions'
     'zsh-syntax-highlighting'
+    'koekeishiya/formulae/yabai'
+    'koekeishiya/formulae/skhd'
 )
 
 
