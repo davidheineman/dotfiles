@@ -183,6 +183,9 @@ export DOCKER_HOST="unix:///Users/dhei/.docker/run/docker.sock"
 # No HF tokenizer parallel
 export TOKENIZERS_PARALLELISM=false
 
+# move NLTK data
+export NLTK_DATA=/opt/nltk_data
+
 condainit() {
     ### Only initalize conda optionally
     __conda_setup="$('/Users/dhei/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -221,5 +224,10 @@ milton() {
     { printf "%-25s %15s\n", $1, $2 }
   '
 }
+
+# if NOT inside VS Code or Cursor
+if [[ -z "$VSCODE_PID" && "$TERM_PROGRAM" != "vscode" && "$TERM_PROGRAM" != "cursor" ]]; then
+  uva
+fi
 
 export PATH="/usr/local/bin:$PATH"
