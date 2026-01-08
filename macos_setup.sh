@@ -176,6 +176,7 @@ brew_packages_to_install=(
     'uv'
     'visual-studio-code'
     'wget'
+    'watch'
     'yarn'
     'vagrant'
     'virtualbox'
