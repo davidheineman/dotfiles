@@ -56,6 +56,10 @@ if [ -n "$pip_path" ] && [ -f "$pip_path" ]; then
 fi
 alias pip="uv pip" # Error: pip is disabled (use uv/uvinit/uva instead, its better). if you need to use it, call pipforce
 
+o() {
+    open -a "$*"
+}
+alias olist="ls /Applications /System/Applications /Applications/Utilities /System/Applications/Utilities ~/Applications 2>/dev/null"
 alias spotify='open -a "Spotify"'
 alias slack='open -a "Slack"'
 alias notion='open -a "Notion"'
@@ -223,6 +227,11 @@ milton() {
             printf "%-25s %15s\n", "------------------------", "-------------" }
     { printf "%-25s %15s\n", $1, $2 }
   '
+}
+
+ai2sock() {
+    ssh -f -N -D 127.0.0.1:1080 ai2
+    echo "Go to Wifi -> Details -> Proxies. Turn on SOCKS proxy. Set Server to '127.0.0.1' and Port to '1080'"
 }
 
 # if NOT inside VS Code or Cursor
