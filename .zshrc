@@ -1,4 +1,7 @@
 # Initalize Oh My Zsh
+ZSH_DISABLE_COMPFIX=true # skip compaudit
+DISABLE_MAGIC_FUNCTIONS=true # skip compinit
+zstyle ':omz:lib:completion' skip yes # don't do compinit here, we'll do it later
 export ZSH="$HOME/.oh-my-zsh"
 zstyle ':omz:update' mode auto
 zstyle ':omz:update' frequency 13
@@ -6,7 +9,7 @@ DISABLE_AUTO_TITLE="true"
 ENABLE_CORRECTION="false"
 # ZSH_THEME="robbyrussell"
 export BAT_PAGER="cat"
-plugins=(git zsh-syntax-highlighting zsh-autosuggestions you-should-use zsh-bat)
+plugins=(git zsh-syntax-highlighting zsh-autosuggestions zsh-bat) # you-should-use 
 source $ZSH/oh-my-zsh.sh
 
 # Initalize brew
@@ -14,12 +17,18 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # Startup text
 figlet "davidterm" | lolcat
-# echo "uv (uvinit, uva, uvinstall) | ghview | neofetch | ai2 (bd, bstart, bstop, blist, bport, bl, ai2code, ai2codereset, ai2cleanup) | skynet | chat | acl | condacreate | chrome (gdrive/docs/sheets/slides/cal/share/join) | scholar | weather | ifconfig | spotify | slack | notion | texts | photos | maps | code" | cut -c -$(tput cols) | lolcat
 
-# Initalize NVM
+# Initalize NVM (lazy load)
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+nvm() {
+  unfunction nvm node npm npx
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+  nvm "$@"
+}
+node() { nvm use default >/dev/null; command node "$@"; }
+npm()  { nvm use default >/dev/null; command npm "$@"; }
+npx()  { nvm use default >/dev/null; command npx "$@"; }
 
 # Terminal colors
 autoload -U colors && colors
@@ -238,5 +247,19 @@ ai2sock() {
 if [[ -z "$VSCODE_PID" && "$TERM_PROGRAM" != "vscode" && "$TERM_PROGRAM" != "cursor" ]]; then
   uva
 fi
+
+fpath+=~/.zfunc
+fpath=(/Users/dhei/.docker/completions $fpath) # Docker desktop CLI completions
+
+### Autocomplete (rebuild cache one a day)
+autoload -Uz compinit
+if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
+###
+
+zstyle ':completion:*' menu selectexport PATH="/Applications/Docker.app/Contents/Resources/bin:$PATH"
 
 export PATH="/usr/local/bin:$PATH"
