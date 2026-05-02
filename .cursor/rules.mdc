@@ -1,0 +1,28 @@
+---
+alwaysApply: true
+---
+
+=== Runtime ===
+
+If you write a large amount of code (like the first query for a codebase), please RUN THE CODE after you write it, or run a minimal version of the code. And debug it, if it doesn't work.
+
+=== Python setup ===
+
+In Python:
+
+- I prefer to use `tqdm` and `rich` for progress bars and printing. Use progress bars for anything that takes a while
+- I prefer `pytorch`
+- I prefer using colors in the terminal
+- I prefer using `omegaconf` and dataclasses wherever possible
+- I HATE **kwargs and *args. I like things prespecified
+
+
+=== Environment setup ===
+
+always use uv when possible (I have `uvinit` to initalize and `uva` to activate)
+
+always use `pyproject.toml` over `requirements.txt` and make a simple pyproject
+
+avoid big docstrings, and do not write docstrings at the top of files
+
+when writing README.md files, write simple READMEs basically with just instructions with how to  setup and run. do not write out the architecture of the project, or go into too much detail.

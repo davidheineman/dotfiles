@@ -260,6 +260,11 @@ else
 fi
 ###
 
+### Back-up the main ~/.zshrc -> ~/.zshrc-bak every 24 hours
+if [[ -n ~/.zshrc-bak(#qN.mh+24) ]] || [[ ! -f ~/.zshrc-bak ]]; then
+  cp ~/.zshrc ~/.zshrc-bak
+fi
+
 zstyle ':completion:*' menu selectexport PATH="/Applications/Docker.app/Contents/Resources/bin:$PATH"
 
 export PATH="/usr/local/bin:$PATH"
