@@ -14,8 +14,8 @@ In Python:
 - I prefer `pytorch`
 - I prefer using colors in the terminal
 - I prefer using `omegaconf` and dataclasses wherever possible
+    - I prefer to use `omegaconf` over `argparse`. I prefer against `argparse` generally because it's quite wordy.
 - I HATE **kwargs and *args. I like things prespecified
-
 
 === Environment setup ===
 
