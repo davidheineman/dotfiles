@@ -112,6 +112,7 @@ brew_packages_to_install=(
     'blender'
     'blueutil'
     'chatgpt'
+    'cursor'
     'claude'
     'colordiff'
     'coreutils'
