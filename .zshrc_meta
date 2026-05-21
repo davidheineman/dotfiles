@@ -25,6 +25,7 @@ _fair_alive() {
 
 # Utility: open a pipe to FAIR
 _fairconnect() {
+    setopt local_options no_monitor
     _fairkill 2>/dev/null
     mkdir -p "$FAIR_DIR"
     rm -f "$FAIR_DIR/input.pipe"
