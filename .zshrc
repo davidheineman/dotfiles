@@ -117,43 +117,43 @@ scholar() {
 }
 gdrive() {
     if [ -z "$*" ]; then
-        open -a "Google Chrome" "https://drive.google.com/drive/u/1"
+        open -a "Google Chrome" "https://drive.google.com/drive/u/0"
     else
-        open -a "Google Chrome" "https://drive.google.com/drive/u/1/search?q=$*"
+        open -a "Google Chrome" "https://drive.google.com/drive/u/0/search?q=$*"
     fi
 }
 gdocs() {
     if [ -z "$*" ]; then
-        open -a "Google Chrome" "https://docs.google.com/document/u/1"
+        open -a "Google Chrome" "https://docs.google.com/document/u/0"
     else
-        open -a "Google Chrome" "https://docs.google.com/document/u/1/?q=$*"
+        open -a "Google Chrome" "https://docs.google.com/document/u/0/?q=$*"
     fi
 }
 gsheets() {
     if [ -z "$*" ]; then
-        open -a "Google Chrome" "https://docs.google.com/spreadsheets/u/1"
+        open -a "Google Chrome" "https://docs.google.com/spreadsheets/u/0"
     else
-        open -a "Google Chrome" "https://docs.google.com/spreadsheets/u/1/?q=$*"
+        open -a "Google Chrome" "https://docs.google.com/spreadsheets/u/0/?q=$*"
     fi
 }
 gslides() {
     if [ -z "$*" ]; then
-        open -a "Google Chrome" "https://docs.google.com/presentation/u/1"
+        open -a "Google Chrome" "https://docs.google.com/presentation/u/0"
     else
-        open -a "Google Chrome" "https://docs.google.com/presentation/u/1/?q=$*"
+        open -a "Google Chrome" "https://docs.google.com/presentation/u/0/?q=$*"
     fi
 }
 gcal() {
-    open -a "Google Chrome" "https://calendar.google.com/calendar/u/1/r"
+    open -a "Google Chrome" "https://calendar.google.com/calendar/u/0/r"
 }
 gmeet() {
-    open -a "Google Chrome" "https://meet.google.com/landing?authuser=1"
+    open -a "Google Chrome" "https://meet.google.com/landing?authuser=0"
 }
 gshare() {
-    open -a "Google Chrome" "https://meet.google.com/landing?authuser=1&screenshare"
+    open -a "Google Chrome" "https://meet.google.com/landing?authuser=0&screenshare"
 }
 gjoin() {
-    open -a "Google Chrome" "https://meet.google.com/landing?authuser=1&autojoin"
+    open -a "Google Chrome" "https://meet.google.com/landing?authuser=0&autojoin"
 }
 hf() {
     if [ -z "$*" ]; then
@@ -259,6 +259,16 @@ else
   compinit -C
 fi
 ###
+
+# Restore old zsh 5.9 `time` behavior
+disable -r time
+eval '
+time() {
+  enable -r time
+  eval "time ( $* )"
+  disable -r time
+}
+'
 
 ### Back-up the main ~/.zshrc -> ~/.zshrc-bak every 24 hours
 if [[ -n ~/.zshrc-bak(#qN.mh+24) ]] || [[ ! -f ~/.zshrc-bak ]]; then

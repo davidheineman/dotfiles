@@ -1,0 +1,114 @@
+# FAIR-specific configs
+alias newfair="cloud_corp hpc login fair-sc --vpnless" # create / connect to login pod
+alias delfair="cloud_corp hpc delete-login-pod dhei fair-sc" # delete login pod
+alias claude="claude --dangerously-enable-internet-mode --dangerously-skip-permissions"
+alias code="code-fb"
+faircode() {
+    code-fb --folder-uri vscode-remote://fb-remote+fair-sc/home/dhei/$*
+}
+alias fairclaude='ssh fair-sc -t '\''tmux new-session "bash -ic claude"'\'''
+
+
+
+# ===============================
+# FAIR Pipe utilities (for fast fair commands)
+# ===============================
+
+FAIR_DIR="$HOME/.fair-session"
+
+# Utility: is FAIR pipe alive
+_fair_alive() {
+    [[ -n "$FAIR_FD" ]] &&
+    [[ -f "$FAIR_DIR/bg.pid" ]] &&
+    kill -0 "$(cat "$FAIR_DIR/bg.pid" 2>/dev/null)" 2>/dev/null
+}
+
+# Utility: open a pipe to FAIR
+_fairconnect() {
+    _fairkill 2>/dev/null
+    mkdir -p "$FAIR_DIR"
+    rm -f "$FAIR_DIR/input.pipe"
+    mkfifo "$FAIR_DIR/input.pipe"
+    : > "$FAIR_DIR/output"
+
+    exec {FAIR_FD}<>"$FAIR_DIR/input.pipe"
+
+    ssh -T -o BatchMode=yes fair-sc "bash --login -O expand_aliases" <&$FAIR_FD > "$FAIR_DIR/output" 2>&1 &
+    echo $! > "$FAIR_DIR/bg.pid"
+    disown 2>/dev/null
+
+    local marker="__FAIR_INIT_${RANDOM}__"
+    echo "echo $marker" >&$FAIR_FD
+
+    local i=0
+    while ! grep -q "$marker" "$FAIR_DIR/output" 2>/dev/null; do
+        sleep 0.2
+        i=$((i + 1))
+        if [[ $i -gt 30 ]]; then
+            echo "fair: connection timed out" >&2
+            _fairkill
+            return 1
+        fi
+    done
+}
+
+
+fair() {
+    if [[ $# -eq 0 ]]; then
+        ssh fair-sc
+        return
+    fi
+
+    _fair_alive || _fairconnect || return 1
+
+    local marker="__FAIR_${RANDOM}${RANDOM}__"
+    local offset=$(command wc -c < "$FAIR_DIR/output" | tr -d ' ')
+
+    echo "echo ${marker}_S; $*; __fair_ec=\$?; echo ${marker}_E:\$__fair_ec" >&$FAIR_FD
+
+    local i=0
+    while ! tail -c +$((offset + 1)) "$FAIR_DIR/output" 2>/dev/null | grep -q "${marker}_E:"; do
+        sleep 0.02
+        i=$((i + 1))
+        if [[ $i -ge 1500 ]]; then
+            echo "fair: timed out after 30s" >&2
+            return 124
+        fi
+    done
+
+    local chunk=$(tail -c +$((offset + 1)) "$FAIR_DIR/output")
+    local ec=$(printf '%s\n' "$chunk" | grep -o "${marker}_E:[0-9]*" | head -1 | cut -d: -f2)
+    printf '%s\n' "$chunk" | sed -n "/${marker}_S/,/${marker}_E/p" | sed '1d;$d'
+
+    return ${ec:-1}
+}
+
+_fairkill() {
+    [[ -n "$FAIR_FD" ]] && exec {FAIR_FD}>&- 2>/dev/null
+    unset FAIR_FD
+    if [[ -f "$FAIR_DIR/bg.pid" ]]; then
+        local pid=$(cat "$FAIR_DIR/bg.pid" 2>/dev/null)
+        if [[ -n "$pid" ]]; then
+            kill $pid 2>/dev/null
+            pkill -P $pid 2>/dev/null
+        fi
+    fi
+    rm -f "$FAIR_DIR/bg.pid" "$FAIR_DIR/input.pipe" "$FAIR_DIR/output"
+}
+
+fairgpu() {
+    _fair_alive || _fairconnect || return 1
+
+    local output
+    output=$(fair "python ~/fairdev/slurm/interactive.py 2>&1")
+    local jobid=$(printf '%s\n' "$output" | grep -E '^[0-9]+$' | head -1)
+
+    if [[ -z "$jobid" ]]; then
+        echo "fairgpu: no running interactive job found" >&2
+        printf '%s\n' "$output" >&2
+        return 1
+    fi
+
+    printf '%s\n' "$output" | grep -v '^[0-9]*$' >&2
+    ssh -t fair-sc "bash --login -c 'sa $jobid'"
+}
