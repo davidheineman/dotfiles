@@ -9,7 +9,7 @@ faircode() {
 alias fairclaude='ssh fair-sc -t '\''tmux new-session "bash -ic claude"'\'''
 
 # Delete the MCI application
-chmod 000 /Applications/MCI.app/Contents/MacOS/MCI
+alias mci="sudo chmod 000 /Applications/MCI.app/Contents/MacOS/MCI"
 
 # ===============================
 # FAIR remote command helpers (persistent SSH session via zsh coproc)
