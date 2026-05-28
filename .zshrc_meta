@@ -1,5 +1,5 @@
 # FAIR-specific configs
-alias newfair="cloud_corp hpc login fair-sc --vpnless" # create / connect to login pod
+alias newfair="cloud_corp hpc login fair-sc --vpnless --et" # create / connect to login pod
 alias delfair="cloud_corp hpc delete-login-pod dhei fair-sc" # delete login pod
 alias claude="claude --dangerously-enable-internet-mode --dangerously-skip-permissions"
 alias code="code-fb"
@@ -8,108 +8,68 @@ faircode() {
 }
 alias fairclaude='ssh fair-sc -t '\''tmux new-session "bash -ic claude"'\'''
 
-
+# Delete the MCI application
+chmod 000 /Applications/MCI.app/Contents/MacOS/MCI
 
 # ===============================
-# FAIR Pipe utilities (for fast fair commands)
+# FAIR remote command helpers (persistent SSH session via zsh coproc)
 # ===============================
+# Keeps one SSH session alive per shell. We only pay the per-invocation
+# `cloud_corp` cert-refresh cost (from the Match-exec block in ~/.ssh/config)
+# once per shell instead of once per command. Uses zsh's `coproc` so reads
+# block on a kernel pipe — no polling, no `tail -f`, no timeout.
 
-FAIR_DIR="$HOME/.fair-session"
+_fair_alive() { [[ -n "$FAIR_PID" ]] && kill -0 "$FAIR_PID" 2>/dev/null }
 
-# Utility: is FAIR pipe alive
-_fair_alive() {
-    [[ -n "$FAIR_FD" ]] &&
-    [[ -f "$FAIR_DIR/bg.pid" ]] &&
-    kill -0 "$(cat "$FAIR_DIR/bg.pid" 2>/dev/null)" 2>/dev/null
+_fairkill() {
+    [[ -n "$FAIR_PID" ]] && kill "$FAIR_PID" 2>/dev/null
+    unset FAIR_PID
+    coproc exit 2>/dev/null
 }
+trap _fairkill EXIT
 
-# Utility: open a pipe to FAIR
 _fairconnect() {
-    setopt local_options no_monitor
-    _fairkill 2>/dev/null
-    mkdir -p "$FAIR_DIR"
-    rm -f "$FAIR_DIR/input.pipe"
-    mkfifo "$FAIR_DIR/input.pipe"
-    : > "$FAIR_DIR/output"
-
-    exec {FAIR_FD}<>"$FAIR_DIR/input.pipe"
-
-    ssh -T -o BatchMode=yes fair-sc "bash --login -O expand_aliases" <&$FAIR_FD > "$FAIR_DIR/output" 2>&1 &
-    echo $! > "$FAIR_DIR/bg.pid"
-    disown 2>/dev/null
-
-    local marker="__FAIR_INIT_${RANDOM}__"
-    echo "echo $marker" >&$FAIR_FD
-
-    local i=0
-    while ! grep -q "$marker" "$FAIR_DIR/output" 2>/dev/null; do
-        sleep 0.2
-        i=$((i + 1))
-        if [[ $i -gt 30 ]]; then
-            echo "fair: connection timed out" >&2
-            _fairkill
-            return 1
-        fi
+    echo "fair: opening session..." >&2
+    setopt local_options no_monitor    # suppress "[N] PID" job-control noise
+    coproc ssh -T fair-sc "bash --login -O expand_aliases 2>&1"
+    FAIR_PID=$!
+    print -p "echo __FAIR_INIT_$$__"
+    local line
+    while IFS= read -p line; do
+        [[ "$line" == "__FAIR_INIT_$$__" ]] && break
     done
 }
-
 
 fair() {
     if [[ $# -eq 0 ]]; then
         ssh fair-sc
         return
     fi
-
     _fair_alive || _fairconnect || return 1
 
-    local marker="__FAIR_${RANDOM}${RANDOM}__"
-    local offset=$(command wc -c < "$FAIR_DIR/output" | tr -d ' ')
+    local m="__FAIR_${RANDOM}${RANDOM}__"
+    print -p "{ $*; } 2>&1; echo ${m}_END:\$?"
 
-    echo "echo ${marker}_S; $*; __fair_ec=\$?; echo ${marker}_E:\$__fair_ec" >&$FAIR_FD
-
-    local i=0
-    while ! tail -c +$((offset + 1)) "$FAIR_DIR/output" 2>/dev/null | grep -q "${marker}_E:"; do
-        sleep 0.02
-        i=$((i + 1))
-        if [[ $i -ge 1500 ]]; then
-            echo "fair: timed out after 30s" >&2
-            return 124
+    local line ec
+    while IFS= read -p line; do
+        if [[ "$line" == ${m}_END:* ]]; then
+            ec=${line#${m}_END:}
+            break
         fi
+        print -r -- "$line"
     done
-
-    local chunk=$(tail -c +$((offset + 1)) "$FAIR_DIR/output")
-    local ec=$(printf '%s\n' "$chunk" | grep -o "${marker}_E:[0-9]*" | head -1 | cut -d: -f2)
-    printf '%s\n' "$chunk" | sed -n "/${marker}_S/,/${marker}_E/p" | sed '1d;$d'
-
     return ${ec:-1}
 }
 
-_fairkill() {
-    [[ -n "$FAIR_FD" ]] && exec {FAIR_FD}>&- 2>/dev/null
-    unset FAIR_FD
-    if [[ -f "$FAIR_DIR/bg.pid" ]]; then
-        local pid=$(cat "$FAIR_DIR/bg.pid" 2>/dev/null)
-        if [[ -n "$pid" ]]; then
-            kill $pid 2>/dev/null
-            pkill -P $pid 2>/dev/null
-        fi
-    fi
-    rm -f "$FAIR_DIR/bg.pid" "$FAIR_DIR/input.pipe" "$FAIR_DIR/output"
-}
-
 fairgpu() {
-    _fair_alive || _fairconnect || return 1
-
     local output
     output=$(fair "python ~/fairdev/slurm/interactive.py 2>&1")
     local jobid=$(printf '%s\n' "$output" | grep -E '^[0-9]+$' | head -1)
-
     if [[ -z "$jobid" ]]; then
         echo "fairgpu: no running interactive job found" >&2
         printf '%s\n' "$output" >&2
         return 1
     fi
-
     printf '%s\n' "$output" | grep -v '^[0-9]*$' >&2
     ssh -t fair-sc "bash --login -c 'sa $jobid'"
 }
