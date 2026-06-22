@@ -185,6 +185,7 @@ brew_packages_to_install=(
     'zsh-syntax-highlighting'
     'koekeishiya/formulae/yabai'
     'koekeishiya/formulae/skhd'
+    'gh'
 )
 
 
