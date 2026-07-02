@@ -1,5 +1,6 @@
 # FAIR-specific configs
-alias newfair="cloud_corp hpc login fair-sc --vpnless --et" # create / connect to login pod
+alias newfair="cloud_corp hpc login fair-sc --et" # create / connect to login pod
+alias newfairgpu="cloud_corp hpc login fair-sc --gpu --duration 57600 --partition h200_dev --request-user-cert --qos h200_dev --account transformer2" # request a GPU sesh for 16 hours
 alias delfair="cloud_corp hpc delete-login-pod dhei fair-sc" # delete login pod
 alias claude="claude --dangerously-enable-internet-mode --dangerously-skip-permissions"
 alias code="code-fb"
