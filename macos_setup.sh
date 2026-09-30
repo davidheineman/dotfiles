@@ -203,23 +203,24 @@ brew_cask_to_install=(
     'blender'
     'claude'
     'cyberduck'             # sftp client
-    'docker'
     'discord'               # chat app
+    'docker'
     'eqmac'
     'figma'
     'font-fira-code'        # font with ligatures
     'google-cloud-sdk'
     'iterm2'                # terminal
     'lingon-x'              # manage startup items
-    'notion'                # note taking
     'mactex'
+    'notion'                # note taking
     'orbstack'              # replacement for docker
+    'screen-studio'         # screen recordings
     'slack'                 # chat app
     'spotify'               # music player
     'visual-studio-code'    # text editor
-    'zoom'                  # video conferencing
+    'whatsapp'
     'xquartz'
-    'screen-studio'         # screen recordings
+    'zoom'                  # video conferencing
 )
 
 
