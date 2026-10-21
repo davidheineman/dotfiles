@@ -236,6 +236,68 @@ ai2sock() {
     echo "Go to Wifi -> Details -> Proxies. Turn on SOCKS proxy. Set Server to '127.0.0.1' and Port to '1080'"
 }
 
+
+# Stanford devtools
+alias sc='ssh sc'
+alias it='ssh interact'
+itcursorhome() {
+  local dir="/afs/cs.stanford.edu/u/dhei"
+  if [[ -n "$1" ]]; then
+    [[ "$1" == /* ]] && dir="$1" || dir="$dir/$1"
+  fi
+  cursor --remote ssh-remote+interact "$dir"
+}
+itcursor() {
+  local dir="/nlp/scr/dhei"
+  if [[ -n "$1" ]]; then
+    [[ "$1" == /* ]] && dir="$1" || dir="$dir/$1"
+  fi
+  cursor --remote ssh-remote+interact "$dir"
+}
+
+# create CPU interactive job (👋-dhei-interact) and return hostname
+snode() {
+    ssh sc 'bash -s' <<'EOF'
+JOB_NAME="👋-dhei-interact"
+
+# Check for an existing running job.
+job_id=$(squeue -h -u "$USER" -n "$JOB_NAME" -t R -o "%i" | head -1)
+
+# If no running job exists, check for a pending one.
+if [[ -z "$job_id" ]]; then
+    job_id=$(squeue -h -u "$USER" -n "$JOB_NAME" -t PD -o "%i" | head -1)
+fi
+
+# If neither exists, submit a new job.
+if [[ -z "$job_id" ]]; then
+    job_id=$(sbatch --parsable \
+        --account=nlp \
+        --partition=sc-loprio \
+        --job-name="$JOB_NAME" \
+        --wrap="sleep infinity")
+
+    echo "Submitted Slurm job $job_id" >&2
+fi
+
+# Wait until the job is running.
+while true; do
+    hostname=$(squeue -h -j "$job_id" -t R -o "%N")
+
+    if [[ -n "$hostname" && "$hostname" != "(null)" ]]; then
+        echo "$hostname"
+        break
+    fi
+
+    if ! squeue -h -j "$job_id" | grep -q .; then
+        echo "Job $job_id is no longer queued." >&2
+        exit 1
+    fi
+
+    sleep 2
+done
+EOF
+}
+
 # if NOT inside VS Code or Cursor
 if [[ -z "$VSCODE_PID" && "$TERM_PROGRAM" != "vscode" && "$TERM_PROGRAM" != "cursor" ]]; then
   uva
