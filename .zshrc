@@ -251,14 +251,21 @@ ai2sock() {
 # Stanford devtools
 alias sc='ssh sc'
 alias it='ssh interact'
-itcursorhome() {
-  local dir="/afs/cs.stanford.edu/u/dhei"
+itcursorhome() { # 50GB home directory
+  local dir="/sailhome/dhei"
   if [[ -n "$1" ]]; then
     [[ "$1" == /* ]] && dir="$1" || dir="$dir/$1"
   fi
   cursor --remote ssh-remote+interact "$dir"
 }
-itcursor() {
+itcursor() { # 50GB code directory (projects live here!)
+  local dir="/nlp/u/dhei"
+  if [[ -n "$1" ]]; then
+    [[ "$1" == /* ]] && dir="$1" || dir="$dir/$1"
+  fi
+  cursor --remote ssh-remote+interact "$dir"
+}
+itcursordata() { # 2TB data directory
   local dir="/nlp/scr/dhei"
   if [[ -n "$1" ]]; then
     [[ "$1" == /* ]] && dir="$1" || dir="$dir/$1"
