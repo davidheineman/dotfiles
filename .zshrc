@@ -38,6 +38,17 @@ export PS1="%{$fg[magenta]%}%n%{$reset_color%}»%{$fg[blue]%}%m %{$fg[green]%}%~
 # Change hostname
 export HOST=dhei-mbp
 
+### Coding agents!
+# https://code.claude.com/docs/en/changelog
+# CLAUDE_CODE_VERSION_OVERRIDE=2.1.234 
+alias claude="claude --dangerously-skip-permissions --effort high --model claude-opus-5-5"
+alias cresume="claude --resume"
+alias cattach="claude attach"
+alias ct='tmux new-session "bash -ic claude"'
+
+# https://developers.openai.com/api/docs/guides/latest-model
+alias codex='codex --dangerously-bypass-approvals-and-sandbox -c model_reasoning_effort="high" -m gpt-6.1-sol'
+
 # Custom aliases
 alias skynet="ssh dheineman3@sky1.cc.gatech.edu"
 alias skynet2="ssh dheineman3@sky2.cc.gatech.edu"
@@ -257,45 +268,7 @@ itcursor() {
 
 # create CPU interactive job (👋-dhei-interact) and return hostname
 snode() {
-    ssh sc 'bash -s' <<'EOF'
-JOB_NAME="👋-dhei-interact"
-
-# Check for an existing running job.
-job_id=$(squeue -h -u "$USER" -n "$JOB_NAME" -t R -o "%i" | head -1)
-
-# If no running job exists, check for a pending one.
-if [[ -z "$job_id" ]]; then
-    job_id=$(squeue -h -u "$USER" -n "$JOB_NAME" -t PD -o "%i" | head -1)
-fi
-
-# If neither exists, submit a new job.
-if [[ -z "$job_id" ]]; then
-    job_id=$(sbatch --parsable \
-        --account=nlp \
-        --partition=sc-loprio \
-        --job-name="$JOB_NAME" \
-        --wrap="sleep infinity")
-
-    echo "Submitted Slurm job $job_id" >&2
-fi
-
-# Wait until the job is running.
-while true; do
-    hostname=$(squeue -h -j "$job_id" -t R -o "%N")
-
-    if [[ -n "$hostname" && "$hostname" != "(null)" ]]; then
-        echo "$hostname"
-        break
-    fi
-
-    if ! squeue -h -j "$job_id" | grep -q .; then
-        echo "Job $job_id is no longer queued." >&2
-        exit 1
-    fi
-
-    sleep 2
-done
-EOF
+    ssh sc 'bash -s' < /Users/dhei/personal/dotfiles/scripts/get_stanford_node.sh
 }
 
 # if NOT inside VS Code or Cursor
