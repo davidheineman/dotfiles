@@ -2,13 +2,11 @@
 alwaysApply: true
 ---
 
-=== Runtime ===
+=== runtime ===
 
 If you write a large amount of code (like the first query for a codebase), please RUN THE CODE after you write it, or run a minimal version of the code. And debug it, if it doesn't work.
 
-=== Python setup ===
-
-In Python:
+=== python ===
 
 - I prefer to use `tqdm` and `rich` for progress bars and printing. Use progress bars for anything that takes a while
 - I prefer `pytorch`
@@ -17,12 +15,13 @@ In Python:
     - I prefer to use `omegaconf` over `argparse`. I prefer against `argparse` generally because it's quite wordy.
 - I HATE **kwargs and *args. I like things prespecified
 
-=== Environment setup ===
+=== python project environments ===
 
 - always use uv when possible (I have `uvinit` to initalize and `uva` to activate)
 - always use `pyproject.toml` over `requirements.txt` and make a simple pyproject
 - avoid big docstrings, and do not write docstrings at the top of files
 - when writing README.md files, write simple READMEs basically with just instructions with how to setup and run. do not write out the architecture of the project, or go into too much detail.
+- do not write random additional .md files every time I ask you to make a change. if you do have important or relevant information to add, please add to AGENTS.md (or README.md, sparingly)
 
 === matplotlib ====
 
@@ -33,3 +32,32 @@ In Python:
 - save in .png with 300 dpi, do not save in .pdf or .svg unless asked
 - plotting scripts should go in a .plotting/ folder, and saved data (e.g. from wandb) should go in a .cache/ folder
 - subplots should generally be on the smaller side so it's easier to see the text
+
+=== stanford compute ====
+
+- you are likely running on the stanford supercomputer (sc.stanford.edu or similar)
+- by default, please ensure your code can run on ANY hardware
+    - A100, H100, H200, L40S, 3090, A5000, A6000, RTX 6000 Ada, Titan
+    - submit to these slurm partitions: `jag-standard,miso,sphinx,miso-lo,sphinx-lo,jag-lo,sc-loprio`
+    - when submitting jobs, please ensure the jobs log a few steps, just in case they fail
+    - usually my account can get ~24-32 low priority GPUs, so please ensure jobs are submitted such that they get those GPUs
+    - feel free to submit 1, 4 or 8 GPU jobs to get completed jobs faster. whichever we think will schedule fastest + have shortest wall time
+
+reference guide to partitions / gpu types:
+
+| Partitions | GPU types |
+|---|---|
+| `sc-loprio` | Mixed, including A100, H100, H200, L40S |
+| `sc-freegpu` | 1070, P100, V100, Titan |
+| `jag-urgent`, `jag-important`, `jag-hi`, `jag-standard`, `jag-lo` | 3090, A5000, A6000, RTX 6000 Ada, Titan |
+| `miso`, `miso-lo`, `miso-interactive` | H200 |
+| `sphinx`, `sphinx-lo` | A100, H100, H200 |
+
+=== stanford storage ===
+
+- i have three folders:
+    - `/sailhome/dhei` - 20GB home dir
+    - `/nlp/u/dhei` - 50GB data dir (backed-up), for project code, venvs, etc.
+    - `/nlp/scr/dhei` - 2TB data dir (symlinked to `/juice5b/scr5b/dhei`)
+- please ensure your jobs will not fail due to storage requirements on `/nlp/scr/dhei`. often, you can clear data from old or unneded runs. 
+- if there's old data that you aren't confident can be deleted, you can upload to a HuggingFace collection (https://huggingface.co/davidheineman/collections), then delete the data. HF collections have 10TB of space.
