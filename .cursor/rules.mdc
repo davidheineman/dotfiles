@@ -19,10 +19,17 @@ In Python:
 
 === Environment setup ===
 
-always use uv when possible (I have `uvinit` to initalize and `uva` to activate)
+- always use uv when possible (I have `uvinit` to initalize and `uva` to activate)
+- always use `pyproject.toml` over `requirements.txt` and make a simple pyproject
+- avoid big docstrings, and do not write docstrings at the top of files
+- when writing README.md files, write simple READMEs basically with just instructions with how to setup and run. do not write out the architecture of the project, or go into too much detail.
 
-always use `pyproject.toml` over `requirements.txt` and make a simple pyproject
+=== matplotlib ====
 
-avoid big docstrings, and do not write docstrings at the top of files
-
-when writing README.md files, write simple READMEs basically with just instructions with how to  setup and run. do not write out the architecture of the project, or go into too much detail.
+- plots should be matplot style
+- only add random subtext at bottom or in subtitle if absolutely necessary
+- have minimalist xlabel and ylabel
+- if the x-axis is in 1000s, use "K" notation, like "10K"
+- save in .png with 300 dpi, do not save in .pdf or .svg unless asked
+- plotting scripts should go in a .plotting/ folder, and saved data (e.g. from wandb) should go in a .cache/ folder
+- subplots should generally be on the smaller side so it's easier to see the text
